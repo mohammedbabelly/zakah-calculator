@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+  background-color: #f9fafb;
+  margin: 0;
+}
+
+[dir="rtl"] body {
+  font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+}

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:open.er-api.com)",
+      "WebFetch(domain:gold-api.com)",
+      "WebFetch(domain:goldpricez.com)",
+      "WebFetch(domain:freegoldapi.com)",
+      "Bash(npm create:*)"
+    ]
+  }
+}

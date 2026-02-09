@@ -13,6 +13,13 @@ A bilingual (Arabic/English) web app to calculate Islamic Zakah on gold and curr
 - **Offline fallback** — Manual rate entry when APIs are unavailable
 - **Persistent** — Assets saved to localStorage across sessions
 
+## Live Demo
+
+🔗 [zakah.mohammedbabelly.work](https://zakah.mohammedbabelly.work)
+<img width="1728" height="994" alt="Screenshot 2026-02-09 at 19 34 22" src="https://github.com/user-attachments/assets/6327535b-8684-45a6-95bb-c442805f8b30" />
+
+
+
 ## Rate Sources
 
 | Data | Source | Update Frequency |

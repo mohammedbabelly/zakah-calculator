@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { ZakahResult as ZakahResultType, FetchStatus } from '../types';
+import type { ZakahResult as ZakahResultType, FetchStatus, Currency } from '../types';
+
+const CURRENCIES: Currency[] = ['USD', 'EUR', 'SYP', 'TRY', 'AED', 'SAR'];
 
 interface Props {
   result: ZakahResultType | null;
@@ -16,8 +19,21 @@ function formatUSD(value: number): string {
   }).format(value);
 }
 
+function formatCurrency(value: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: currency === 'SYP' ? 0 : 2,
+    }).format(value);
+  } catch {
+    return `${currency} ${value.toLocaleString()}`;
+  }
+}
+
 export default function ZakahResult({ result, status, onRetry, onManualEntry }: Props) {
   const { t } = useTranslation();
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>('USD');
 
   if (status === 'loading') {
     return (
@@ -58,6 +74,8 @@ export default function ZakahResult({ result, status, onRetry, onManualEntry }: 
     );
   }
 
+  const zakahInSelected = result.zakahAmounts[displayCurrency];
+
   return (
     <div className={`rounded-xl shadow-sm border overflow-hidden ${
       result.isAboveNisab ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-200'
@@ -93,10 +111,26 @@ export default function ZakahResult({ result, status, onRetry, onManualEntry }: 
 
         {/* Status */}
         {result.isAboveNisab ? (
-          <div className="bg-emerald-100 rounded-lg p-4 text-center">
-            <p className="text-sm text-emerald-800 mb-1">{t('result.above_nisab')}</p>
-            <p className="text-xs text-emerald-600 mb-2">{t('result.zakah_due')}</p>
-            <p className="text-2xl font-bold text-emerald-900">{formatUSD(result.zakahAmountUSD)}</p>
+          <div className="bg-emerald-100 rounded-lg p-4 text-center space-y-3">
+            <p className="text-sm text-emerald-800">{t('result.above_nisab')}</p>
+            <p className="text-xs text-emerald-600">{t('result.zakah_due')}</p>
+            <p className="text-2xl font-bold text-emerald-900">
+              {formatCurrency(zakahInSelected, displayCurrency)}
+            </p>
+
+            {/* Currency selector */}
+            <div className="flex items-center justify-center gap-2 pt-1">
+              <label className="text-xs text-emerald-700">{t('result.convert_to')}</label>
+              <select
+                value={displayCurrency}
+                onChange={e => setDisplayCurrency(e.target.value as Currency)}
+                className="text-xs border border-emerald-300 rounded-md px-2 py-1 bg-white text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                {CURRENCIES.map(c => (
+                  <option key={c} value={c}>{c} — {t(`currency.${c}`)}</option>
+                ))}
+              </select>
+            </div>
           </div>
         ) : (
           <div className="bg-gray-100 rounded-lg p-4 text-center">

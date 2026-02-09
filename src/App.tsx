@@ -7,6 +7,7 @@ import Header from './components/Header';
 import AssetForm from './components/AssetForm';
 import AssetList from './components/AssetList';
 import ZakahResult from './components/ZakahResult';
+import CurrentRates from './components/CurrentRates';
 import ManualRatesModal from './components/ManualRatesModal';
 
 const STORAGE_KEY = 'zakah-assets';
@@ -68,6 +69,7 @@ export default function App() {
           onRemoveAsset={removeAsset}
           onClearAll={clearAll}
         />
+        <CurrentRates rates={rates} goldPrice={goldPrice} />
         <ZakahResult
           result={result}
           status={status}
